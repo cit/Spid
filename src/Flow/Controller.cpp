@@ -88,8 +88,8 @@ void Flow::Controller::AddPacket(Ip::V4* pIpv4) {
 
                     // Since udp has no states, it's not possible to delete
                     // the whole flow, because it would repeat the identifaction
-                    // on the the same flow as before. To safe memory we only
-                    // delete all packets
+                    // on the the same flow as before. To safe memory the
+                    // program deletes all packets.
                     uflow->DeletePackets();
                 }
 

@@ -39,7 +39,7 @@ void Flow::TcpFlow::AddPacket(Ip::V4* pIpv4) {
     size += pIpv4->frameSize;
 
     // packets that are necessary for establishment or termination doesn't
-    // have an payload, therefore there are not interessting for us
+    // have a payload, therefore there are not interessting for us
     if ((state == ESTABLISHED and pIpv4->pTcp->payloadSize != 0) or
         (state == HALF_CLOSED and pIpv4->pTcp->payloadSize != 0)) {
         packets.push_back(pIpv4);
@@ -128,9 +128,14 @@ bool Flow::TcpFlow::IsEqual(fiveTupel* pId) {
 }
 
 void Flow::TcpFlow::printId() {
-    cout << "Tcp " 
-         << inet_ntoa(id.srcIp) << ":" << id.srcPort << " -> "
-         << inet_ntoa(id.dstIp) << ":" << id.dstPort << endl;
+    if (bFirstTime == false) {
+        cout << "Tcp " 
+             << inet_ntoa(id.srcIp) << ":" << id.srcPort << " -> "
+             << inet_ntoa(id.dstIp) << ":" << id.dstPort << endl;
+        else {
+            cerr << "Can't print tcp-id, since no packet was added to the flow"
+                 << endl;
+        }
 }
 
 Flow::TcpFlow::~TcpFlow() {
