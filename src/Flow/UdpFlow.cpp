@@ -65,8 +65,8 @@ void Flow::UdpFlow::DeletePackets() {
 void Flow::UdpFlow::printId() {
     if (bFirstTime == false) {
         cout << "Udp "
-             << inet_ntoa(id.srcIp) << ":" << id.srcPort << " -> "
-             << inet_ntoa(id.dstIp) << ":" << id.dstPort << endl;
+             << inet_ntoa(id.srcIp) << ":" << id.srcPort << " -> ";
+        cout << inet_ntoa(id.dstIp) << ":" << id.dstPort << endl;
     }
     else {
         cerr << "Can't print udp-id, since no packet was added to the flow"
