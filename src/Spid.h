@@ -17,6 +17,8 @@ extern "C" {
 #include "structs.h"
 
 class Spid {
+    // In this list, all classes were saved, which want to be notified,
+    // if there is a identifed flow.
     std::list<IObserver*> _observers;
     
     typedef std::list<IObserver*>::iterator _iterator;
