@@ -155,7 +155,7 @@ Measurement::Controller::WriteFingerprintDb(char* file, fingerprint* fp) {
     ofstream out(file, ios::out | ios::binary);
     
     if (!out) {
-        fprintf(stderr, "Error: Couldn't open '%s' for writing\n", file);
+        cerr << "Error: Couldn't open '%s' for writing" << endl;
         exit(EXIT_FAILURE);
     }
 
