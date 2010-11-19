@@ -134,22 +134,22 @@ template <class T> char* InspectFlow(T* flow) {
     if (spid->bLearnModus) {
         bool b_found = false;
 
-        for (unsigned short i = 0; i < dbSize; ++i) {
-            if (strcmp(db[i].name, fp->name) == 0) {
+        for (unsigned short i = 0; i < refDB->size; ++i) {
+            if (strcmp(refDB->fp[i].name, fp->name) == 0) {
                 b_found = true;
 
                 bool learn = true;
                 if (spid->kMaxTrainedFlows > 0) {
-                    if (db[i].flowsCnt >= spid->kMaxTrainedFlows)
+                    if (refDB->fp[i].flowsCnt >= spid->kMaxTrainedFlows)
                         learn = false;
                 }
 
                 if (learn) {
-                    db[i].flowsCnt++;
+                    refDB->fp[i].flowsCnt++;
 
                     for (unsigned short y = 0; y < attributes.size(); ++y) {
                         Attributes* attr = attributes.at(y);
-                        attr->ImproveApproximation(&db[i]);
+                        attr->ImproveApproximation(&refDB->fp[i]);
                     }
                     break;
                 }
@@ -159,19 +159,8 @@ template <class T> char* InspectFlow(T* flow) {
 
         // if protocol where not found resize the array and save the database
         // again
-        if (not b_found) {
-            fingerprint* tmp = new fingerprint[dbSize + 1]();
-            memset(tmp, 0, (dbSize*sizeof(tmp)));
-            
-            for (unsigned short i = 0; i < dbSize; ++i) 
-                tmp[i] = db[i];
-            delete [] db;
-
-            db = tmp;
-            db[dbSize] = *fp;
-
-            dbSize++;
-        }
+        if (not b_found)
+            refDB->Add(*fp);
     }
 
     delete fp;
@@ -179,5 +168,5 @@ template <class T> char* InspectFlow(T* flow) {
         delete *iter;
     attributes.clear();
 
-    return (identfiedProtocol != -1) ? db[identfiedProtocol].name : NULL;
+    return (identfiedProtocol != -1) ? refDB->fp[identfiedProtocol].name : NULL;
 }

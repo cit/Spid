@@ -7,17 +7,12 @@
 #define CONTROLLER_H
 
 #include <iostream>
-#include <fstream>
-#include <cstring>
-#include <cstdlib>
-#include <cmath>
-#include <vector>
-#include <typeinfo>
 
 #include "../Flow/TcpFlow.h"
 #include "../Flow/UdpFlow.h"
 
 #include "../structs.h"
+#include "../FingerprintDB.h"
 #include "../Spid.h"
 
 #include "ByteFrequency.h"
@@ -27,7 +22,6 @@
 #include "DirectionChanges.h"
 #include "BytePairsReocurring.h"
 #include "Entropy.h"
-//#include "ByteDistance.h"
 #include "First4BytesCrossSum.h"
 #include "FirstPacketPerDirectionNibbles.h"
 #include "First32BytesFrequency.h"
@@ -44,7 +38,7 @@ namespace Measurement {
         // private variables
         vector<Attributes*>           attributes;
         vector<Attributes*>::iterator iter;
-        fingerprint*                  db;
+        FingerprintDB*                refDB;      // Reference Database
         Spid*                         spid;
         unsigned int                  dbSize;
         unsigned short attributesSize;
@@ -62,18 +56,6 @@ namespace Measurement {
         // This method calculates the kullback–leibler divergence, which is
         // necessary for identification.
         float KullbackLeiblerDivergence(float* dbPro, float* fpPro);
-
-        // This method prints some information that contains in the fingerprint
-        // database. 
-        void PrintFingerprintDb(fingerprint* fp);
-
-        // It writes the complete fingerprint database to a binary file. This
-        // is necessary if a flow will be learned.
-        void WriteFingerprintDb(char* file, fingerprint* fp);
-
-        // It reads the complete fingerprint database. This database is needed
-        // for identification
-        fingerprint* ReadFingerprintDb(char* file);
 
         // Deconstructor of this class
         ~Controller();

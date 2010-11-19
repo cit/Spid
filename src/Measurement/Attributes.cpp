@@ -18,8 +18,7 @@ void
 Measurement::Attributes::setFingerprintPtr(int* fpCnt, float* fpPro,
                                            u_int arrSize) {
     if (arrSize != size) {
-        fprintf(stderr,
-                "Warning: the size of the two arrays is not identical\n");
+        cerr << "Warning: the size of the two arrays is not identical" << endl;
         exit(EXIT_FAILURE);
     }
     
