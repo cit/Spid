@@ -16,15 +16,15 @@ const unsigned int   Spid::kTimeout                  = 64000; // 64 seconds
 Spid::Spid() {
     pPcapFilename    = NULL;    // filename for the pcap-file
     pInterface       = NULL;    // pointer to the network device
-    pLearnFile       = NULL;    // pointer to t
-    pFingerprintFile = NULL;
-    pProtocolName    = NULL;
+    pLearnFile       = NULL;    // pointer to the new reference database file
+    pFingerprintFile = NULL;    // pointer to the reference database file
+    pProtocolName    = NULL;    // the name of the protocol that will be learned
     pPcapHandler     = NULL;    // network interface handler
 
     bPromiscuousMode = false;   // promiscous mode
-    bDebug           = false;   // debug mode
+    bDebug           = false;   // enable debug mode
     bLiveModus       = true;    // default mode is live capturing
-    bLearnModus      = false;   // flag if 
+    bLearnModus      = false;   // enable learn modus 
 }
 
 Spid* Spid::getInstance() {
@@ -82,24 +82,24 @@ void Spid::startIdentifcation(){
     if (bLiveModus) {
         if (pInterface == NULL)
             if ((pInterface = pcap_lookupdev(errbuf)) == NULL) {
-                fprintf(stderr, "Error: %s\n", errbuf);
+                cerr << "Error: " << errbuff << endl;
                 exit(EXIT_FAILURE);
             }
 
-        // open network device for live packet capture
+        // open network device for live packet capturing
         if ((pPcapHandler = pcap_open_live(pInterface, MAX_BYTES_2_CAPTURE,
                                            bPromiscuousMode, 1000, errbuf))
             == NULL) {
-            fprintf(stderr, "Can't open device: %s\n", errbuf);
+            cerr << "Can't open device: " << errbuf << endl;
             exit(EXIT_FAILURE);
         }
     }
 
-    // reading a pcap-file in
+    // read a pcap-file in
     else {
         cout << "file: " << pPcapFilename << endl;
          if ((pPcapHandler = pcap_open_offline(pPcapFilename, errbuf)) == NULL) {
-             fprintf(stderr, "Error: %s\n", errbuf);
+             cerr << "Error: " << errbuf << endl;
              exit(EXIT_FAILURE);
          }
      }
@@ -108,13 +108,13 @@ void Spid::startIdentifcation(){
     // ip and (tcp or udp) filters only ip version 4 packets with tcp or udp
     if (pcap_compile(pPcapHandler, &filter,
                      "ip and (tcp or udp)", 1, 0) == -1) {
-        fprintf(stderr, "ERROR bpf: %s\n", pcap_geterr(pPcapHandler));
+        cerr << "Error bpf: " << pcap_geterr(pPcapHandler) << endl;
         exit(EXIT_FAILURE);
     }
 
     // load the filter program into the packet capture device.
     if (pcap_setfilter(pPcapHandler, &filter) == -1) {
-        fprintf(stderr, "ERROR filter: %s\n", pcap_geterr(pPcapHandler));
+        cerr << "Error filter: " << pcap_geterr(pPcapHandler) << endl;
         exit(EXIT_FAILURE);
     }
 
@@ -132,7 +132,7 @@ void Spid::startIdentifcation(){
 
 void Spid::processPacket(u_char* pArg, const struct pcap_pkthdr* pHeader,
                          const u_char* pPacket) {
-    Flow::Controller* pFlowController = (Flow::Controller *)pArg;
+    Flow::Controller* pFlowController = (Flow::Controller*) pArg;
     Ip::V4* pIpv4 = NULL;
 
     try {
@@ -157,4 +157,3 @@ void Spid::Destroy() {
     }
 
 }
-
