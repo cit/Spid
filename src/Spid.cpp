@@ -82,7 +82,7 @@ void Spid::startIdentifcation(){
     if (bLiveModus) {
         if (pInterface == NULL)
             if ((pInterface = pcap_lookupdev(errbuf)) == NULL) {
-                cerr << "Error: " << errbuff << endl;
+                cerr << "Error: " << errbuf << endl;
                 exit(EXIT_FAILURE);
             }
 
