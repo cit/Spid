@@ -44,5 +44,7 @@ $(NAME): $(OBJ)
 debug : $(OBJ)
 	$(CXX) $(CXXFLAGES) $(DEBUG_FLAGS) $(LIBS) -o $(NAME) $(OBJ)
 
+check-syntax:
+	$(CXX) $(CXXFLAGS) -fsyntax-only -o nul -S ${CHK_SOURCES}
 clean:
 	$(RM) -rf $(NAME) $(OBJ) *.o *.a
