@@ -1,0 +1,29 @@
+#define X_FIELDS \
+    X(float, unicodeFreqPro,              256) \
+    X(int,   unicodeFreqCnt,              256) \
+    X(float, allPacketsFirst8BytesPro,      8) \
+    X(int,   allPacketsFirst8BytesCnt,      8) \
+    X(float, firstBitPositionsMeterPro,    64) \
+    X(int,   firstBitPositionsMeterCnt,    64) \
+    X(float, actionReactionFirst3bytesPro,  3) \
+    X(int,   actionReactionFirst3bytesCnt,  3) \
+    X(float, first32bytesFreqPro,          32) \
+    X(int,   first32bytesFreqCnt,          32) \
+    X(float, FirstPacketNibblesPro,       256) \
+    X(int,   FirstPacketNibblesCnt,       256) \
+    X(float, first4bytescrosssumPro,        4) \
+    X(int,   first4bytescrosssumCnt,        4) \
+    X(float, entropyPro,                    2) \
+    X(int,   entropyCnt,                    2) \
+    X(float, directionChangesPro,           1) \
+    X(int,   directionChangesCnt,           1) \
+    X(float, firstNonEmptyPayloadSizePro,   1) \
+    X(int,   firstNonEmptyPayloadSizeCnt,   1) \
+    X(float, directionBytesMeterPro,        2) \
+    X(int,   directionBytesMeterCnt,        2) \
+    X(float, bytePairsReocurringPro,      256) \
+    X(int,   bytePairsReocurringCnt,      256) \
+    X(float, byteFreqPro,                 256) \
+    X(int,   byteFreqCnt,                 256) \
+    X(float, byteFreqOtherDirectionPro,   256) \
+    X(int,   byteFreqOtherDirectionCnt,   256)

@@ -8,9 +8,10 @@
 
 #include <iostream>
 #include <fstream>
-#include <typeinfo>
+#include <string>
 #include <cstring>
 #include <cstdlib>
+#include <sstream>
 
 #include "structs.h"
 #include "Spid.h"
@@ -20,6 +21,8 @@ class FingerprintDB {
 private:
     Spid* spid;
     
+    #include "FingerprintDB.tcc"
+
 public:
     fingerprint* fp;
     int size;
