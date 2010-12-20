@@ -15,7 +15,7 @@ CP        = /bin/cp
 STRIP     = /usr/bin/strip
 
 # Flags passed to the preprocessor
-CXXFLAGS = -g -Wall -Wextra -Winit-self -march=k8 -ansi -pedantic -std=c++98
+CXXFLAGS = -g -Wall -Wextra -Winit-self -ansi -pedantic -std=c++98
 
 # Additional flags for debugging
 DEBUG_FLAGS = -pg
@@ -26,7 +26,7 @@ LIBS = -lpcap
 # Path to the source and object files
 MODULES   := Flow Ip Measurement .
 SRC_DIR   := $(addprefix src/,$(MODULES))
-SRC   := $(foreach sdir,$(SRC_DIR),$(wildcard $(sdir)/*.cpp))
+SRC       := $(foreach sdir,$(SRC_DIR),$(wildcard $(sdir)/*.cpp))
 OBJ       := $(patsubst src/%.cpp,src/%.o,$(SRC))
 
 ## Name of the programm
