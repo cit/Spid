@@ -9,31 +9,30 @@
 
 extern "C" {
 #include <arpa/inet.h>
-#include <netinet/ip.h>
-#include <netinet/udp.h>
 }
 
 #include "Udp.h"
 #include "V4.h"
 
 #include "../constants.h"
+#include "../structs.h"
 
 using namespace std;
 
-const unsigned char Ip::Udp::kUdpHeaderSize = 8; // UDP header size is alwalys
+const unsigned char Ip::Udp::kUdpHeaderSize = 8; // UDP header size is always
                                                  // 8 bytes
 
 Ip::Udp::Udp(const u_char* pPacket, unsigned short int ipDatagramSize,
              unsigned short int ipHeaderSize) {
-    struct udphdr* p_udp_header = (struct udphdr *)(pPacket + ETHERNET_SIZE
-                                                            + ipHeaderSize);
+    struct udp_hdr* p_udp_hdr = (struct udp_hdr *)(pPacket + ETHERNET_SIZE
+                                                              + ipHeaderSize);
 
     // get a char pointer to the tcp payload
     u_char* pPayload = const_cast<u_char*>(pPacket + ETHERNET_SIZE
                                                    + ipHeaderSize
                                                    + kUdpHeaderSize);
     
-    // calculate the payload size. udp header has always a size of 8 bytes
+    // calculate the payload size. UDP header has always a size of 8 bytes
     payloadSize = ipDatagramSize - ipHeaderSize - kUdpHeaderSize;
 
     // check if the payload is malformed
@@ -44,8 +43,8 @@ Ip::Udp::Udp(const u_char* pPacket, unsigned short int ipDatagramSize,
     memcpy(payload, pPayload, payloadSize);
 
     // set the source and destination ports
-    srcPort = ntohs(p_udp_header->source);
-    dstPort = ntohs(p_udp_header->dest);
+    srcPort = ntohs(p_udp_hdr->source);
+    dstPort = ntohs(p_udp_hdr->dest);
 }
 
 void Ip::Udp::print() {

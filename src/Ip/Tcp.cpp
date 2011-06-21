@@ -9,24 +9,24 @@
 
 extern "C" {
 #include <arpa/inet.h>
-#include <netinet/ip.h>
-#include <netinet/tcp.h>
 }
  
 #include "Tcp.h"
 #include "V4.h"
 
 #include "../constants.h"
+#include "../structs.h"
 
 using namespace std;
 
 Ip::Tcp::Tcp(const u_char* pPacket, unsigned short int ipDatagramSize,
              unsigned short int ipHeaderSize) {
-    struct tcphdr* p_tcp_header = (struct tcphdr*)(pPacket + ETHERNET_SIZE
+    struct tcp_hdr* p_tcp_hdr = (struct tcp_hdr*)(pPacket + ETHERNET_SIZE
                                                    + ipHeaderSize);
-    // calculate the tcpheader size (doff * 4)
-    headerSize = p_tcp_header->doff << 2;
 
+    // calculate the tcpheader size (th_off * 4)
+    headerSize = p_tcp_hdr->th_off << 2;
+    
     // check if the tcp header size is correct
     if (headerSize < 20)
         throw Ip::Error("Warning: Invalid TCP header length.");
@@ -49,21 +49,21 @@ Ip::Tcp::Tcp(const u_char* pPacket, unsigned short int ipDatagramSize,
     
     // set the source and destination ports and convert it from network byte
     // order to host byte order
-    srcPort = ntohs(p_tcp_header->source);
-    dstPort = ntohs(p_tcp_header->dest);
+    srcPort = ntohs(p_tcp_hdr->source);
+    dstPort = ntohs(p_tcp_hdr->dest);
 
-    // set the tcp flags
-    ack = p_tcp_header->ack;
-    syn = p_tcp_header->syn;
-    fin = p_tcp_header->fin;
-    rst = p_tcp_header->rst;
+    // set the TCP flags
+    ack = (p_tcp_hdr->flags & ACK);
+    syn = (p_tcp_hdr->flags & SYN);
+    fin = (p_tcp_hdr->flags & FIN);
+    rst = (p_tcp_hdr->flags & RST);
     
     // is true wenn the ack-flag and the syn-flag is set
-    synAck = (p_tcp_header->ack and p_tcp_header->syn);
+    synAck = (this->ack and this->syn);
 
     // initial sequence numbers
-    seq    = ntohl(p_tcp_header->seq);
-    ackSeq = ntohl(p_tcp_header->ack_seq);
+    seq    = ntohl(p_tcp_hdr->seq);
+    ackSeq = ntohl(p_tcp_hdr->ack_seq);
 }
 
 void Ip::Tcp::print() {

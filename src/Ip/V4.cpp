@@ -8,17 +8,17 @@
 
 extern "C" {
 #include <arpa/inet.h>
-#include <netinet/ip.h>
 }
 
 #include "V4.h"
 
 #include "../constants.h"
+#include "../structs.h"
 
 using namespace std;
 
 Ip::V4::V4(const u_char* pPacket, const struct pcap_pkthdr* pHeader) {
-    struct ip* p_ip_header = (struct ip*)(pPacket + ETHERNET_SIZE);
+    struct ip_hdr* p_ip_header = (struct ip_hdr*)(pPacket + ETHERNET_SIZE);
     
     // extract the source and the destination ip-adrress
     srcIp = (in_addr) p_ip_header->ip_src;
@@ -27,7 +27,7 @@ Ip::V4::V4(const u_char* pPacket, const struct pcap_pkthdr* pHeader) {
     // convert datagram network byte order to host byte order and calculate
     // the header size
     ipDatagramSize = ntohs(p_ip_header->ip_len);
-    headerSize     = p_ip_header->ip_hl << 2;
+    headerSize     = IP_HL(p_ip_header) << 2;
     
     // check if the headersize is correct
     if (headerSize < 20)

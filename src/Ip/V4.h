@@ -2,7 +2,6 @@
 #define V4_H
 
 extern "C" {
-#include <pcap/pcap.h>
 #include <netinet/in.h>
 }
 
