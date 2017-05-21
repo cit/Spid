@@ -2,7 +2,7 @@
 // Controller.cpp
 // This class handles all the flows.
 //
-// Author: Florian Adamsky <florian.adamsky@iem.fh-friedberg.de>
+// Author: Florian Adamsky <fa-spid@haktar.org>
 // ---------------------------------------------------------------------------
 #include <iostream>
 #include <cstdlib>
@@ -51,13 +51,13 @@ void Flow::Controller::AddPacket(Ip::V4* pIpv4) {
             // packet cross the timeout then delete it.
             if ((pIpv4->timeStamp.tv_sec - uflow->lastPacketArrived)
                 >= spid->kTimeout) {
-                udpFlows.erase(udpFlows.begin() + i);    
+                udpFlows.erase(udpFlows.begin() + i);
                 delete uflow;
                 continue;
             }
 
             // check if a udp-flow exist for that packet and check from which
-            // direction it comes from. 
+            // direction it comes from.
             if (uflow->IsEqual(&azub)) {
                 b_direction_found = true;
                 pIpv4->direction = ORIGINATOR_TO_RESPONDER;
@@ -76,7 +76,7 @@ void Flow::Controller::AddPacket(Ip::V4* pIpv4) {
                     and uflow->bInspected == false) {
 
                     char* proto = pm->InspectFlow(uflow);
-                    
+
                     // notify all observers about the result
                     if (!spid->bLearnModus) {
 
@@ -127,7 +127,7 @@ void Flow::Controller::AddPacket(Ip::V4* pIpv4) {
             }
 
             // check if a tcp-flow exist for that packet and check from which
-            // direction it comes from. 
+            // direction it comes from.
             if (tflow->IsEqual(&azub)) {
                 b_direction_found = true;
                 pIpv4->direction = ORIGINATOR_TO_RESPONDER;
@@ -138,14 +138,14 @@ void Flow::Controller::AddPacket(Ip::V4* pIpv4) {
             }
 
             if (b_direction_found) {
-                
+
                 if (tflow->state == CLOSED) {
                     DeleteTcpFlow(tflow, i);
                     continue;
                 }
-                
+
                 b_found = true;
-                
+
                 // analyse packet if it is relevant
                 tflow->AddPacket(pIpv4);
 
@@ -164,7 +164,7 @@ void Flow::Controller::AddPacket(Ip::V4* pIpv4) {
                         else
                             spid->notifyObservers(bzua, proto);
                     }
-                    
+
                     // delete the flow, after the identifcation,
                     DeleteTcpFlow(tflow, i);
                 }

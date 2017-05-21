@@ -2,7 +2,7 @@
 // Tcp.cpp
 // It extracts all the tcp information and puts it into a class.
 //
-// Author: Florian Adamsky <florian.adamsky@iem.fh-friedberg.de>
+// Author: Florian Adamsky <fa-spid@haktar.org>
 // ---------------------------------------------------------------------------
 #include <iostream>
 #include <cstring>
@@ -10,7 +10,7 @@
 extern "C" {
 #include <arpa/inet.h>
 }
- 
+
 #include "Tcp.h"
 #include "V4.h"
 
@@ -26,11 +26,11 @@ Ip::Tcp::Tcp(const u_char* pPacket, unsigned short int ipDatagramSize,
 
     // calculate the tcpheader size (th_off * 4)
     headerSize = p_tcp_hdr->th_off << 2;
-    
+
     // check if the tcp header size is correct
     if (headerSize < 20)
         throw Ip::Error("Warning: Invalid TCP header length.");
-    
+
     // get a char pointer to the tcp payload
     u_char* pPayload = const_cast<u_char*>(pPacket + ETHERNET_SIZE
                                                    + ipHeaderSize
@@ -43,10 +43,10 @@ Ip::Tcp::Tcp(const u_char* pPacket, unsigned short int ipDatagramSize,
     // with this packet
     if (payloadSize > 1460)
         throw Ip::Error("Warning: malformed tcp packet or jumbo frame received");
-    // copy the payload 
+    // copy the payload
     payload = new u_char[payloadSize]();
     memcpy(payload, pPayload, payloadSize);
-    
+
     // set the source and destination ports and convert it from network byte
     // order to host byte order
     srcPort = ntohs(p_tcp_hdr->source);
@@ -57,7 +57,7 @@ Ip::Tcp::Tcp(const u_char* pPacket, unsigned short int ipDatagramSize,
     syn = (p_tcp_hdr->flags & SYN);
     fin = (p_tcp_hdr->flags & FIN);
     rst = (p_tcp_hdr->flags & RST);
-    
+
     // is true wenn the ack-flag and the syn-flag is set
     synAck = (this->ack and this->syn);
 
@@ -75,7 +75,7 @@ void Ip::Tcp::print() {
         cout << "Payload:" << endl;
         printPayload(payload, payloadSize);
     }
-    
+
     printf("\n");
 }
 
@@ -86,7 +86,7 @@ void Ip::Tcp::printPayload(u_char* payload, int len) {
         printf("%02X ", *p_payload);
         p_payload++;
 
-        // print extra space after 8th byte for visual aid 
+        // print extra space after 8th byte for visual aid
         if (i%8 == 0)
             printf(" ");
 
@@ -101,10 +101,10 @@ void Ip::Tcp::printPayload(u_char* payload, int len) {
                     printf(".");
 		foo++;
             }
-            
+
             printf("\n");
         }
-        
+
     }
 }
 

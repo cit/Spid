@@ -1,11 +1,11 @@
 // ---------------------------------------------------------------------------
 // FingerprintDB.cpp
-// 
+//
 // This class handles the connection to the reference database. Every flow will
 // be compared with this database in case of identification. This class provides
 // methods to load and save a database to a file.
 //
-// Author: Florian Adamsky <florian.adamsky@iem.fh-friedberg.de>
+// Author: Florian Adamsky <fa-spid@haktar.org>
 // ---------------------------------------------------------------------------
 #include "FingerprintDB.h"
 
@@ -21,11 +21,11 @@ void FingerprintDB::Add(fingerprint& newfp) {
     // create a new temporary array
     fingerprint* tmp = new fingerprint[size + 1]();
     memset(tmp, 0, (size*sizeof(tmp)));
-    
-    for (unsigned short i = 0; i < size; ++i) 
+
+    for (unsigned short i = 0; i < size; ++i)
         tmp[i] = fp[i];
     delete [] fp;
-    
+
     fp = tmp;
     fp[size] = newfp;
 
@@ -39,7 +39,7 @@ void FingerprintDB::PrintDB() {
         array_size = size;
     else
         array_size = sizeof(*fp) / sizeof(struct fingerprint);
-    
+
     for (unsigned short i = 0; i < array_size; ++i) {
         cout << fp[i].name << " trained with " << fp[i].flowsCnt
              << " flows" << endl;
@@ -58,19 +58,19 @@ void FingerprintDB::DeserializeFromFile(char* file) {
     in.seekg (0, std::ios::end);
     long length = in.tellg();
     in.seekg (0, std::ios::beg);
-    
+
     // allocate memory:
     char *buffer = new char[length];
-    
+
     // read data as a block:
     in.read (buffer,length);
-    
+
     // create string stream of memory contents
     string str(buffer);
-    
+
     // delete temporary buffer
     delete [] buffer;
-    
+
     // close filestream
     in.close();
 
@@ -83,14 +83,14 @@ void FingerprintDB::DeserializeFromFile(char* file) {
     for (int i = 0; i < size; ++i) {
         strncpy(fp[i].name, str.substr(0, str.find_first_of(";")).c_str(), 256);
         str.erase(0, str.find_first_of(";") + 1);
-        
+
         fp[i].flowsCnt = trim<int>(str);
         fp[i].protocol = trim<int>(str);
-        
+
 #define X(type, name, size)                     \
         for(int y=0; y < size; ++y) {           \
             fp[i].name[y] = trim<type>(str);    \
-        } 
+        }
         X_FIELDS
 #undef X
             }
@@ -109,7 +109,7 @@ void FingerprintDB::SerializeToFile(char* file) {
 
         // Writing
     ofstream out(file, ios::out);
-    
+
     if (!out) {
         cerr << "Error: Couldn't open '" << file << "' for writing" << endl;
         exit(EXIT_FAILURE);
@@ -117,15 +117,15 @@ void FingerprintDB::SerializeToFile(char* file) {
 
     // the first integer is the size of the database
     out << size << ';';
-    
+
     for (int i = 0; i < size; ++i) {
-        out << fp[i].name << ";" << fp[i].flowsCnt << ";"    
+        out << fp[i].name << ";" << fp[i].flowsCnt << ";"
             << fp[i].protocol << ";";
 
 #define X(type, name, size)                     \
         for(int y=0; y < size; ++y) {           \
             out << fp[i].name[y] << ";";        \
-        } 
+        }
         X_FIELDS
 #undef X
 

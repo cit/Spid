@@ -2,7 +2,7 @@
 // TcpFlow.cpp
 // This class represents a tcpflow and handles the states of it.
 //
-// Author: Florian Adamsky <florian.adamsky@iem.fh-friedberg.de>
+// Author: Florian Adamsky <fa-spid@haktar.org>
 // ---------------------------------------------------------------------------
 #include <iostream>
 
@@ -18,7 +18,7 @@ Flow::TcpFlow::TcpFlow() {
     bFirstTime        = true;
     bInspected        = false;
     state             = LISTEN;
-    
+
     size              = 0;
     packetCnt         = 0;
     lastPacketArrived = 0;
@@ -129,7 +129,7 @@ bool Flow::TcpFlow::IsEqual(fiveTupel* pId) {
 
 void Flow::TcpFlow::printId() {
     if (bFirstTime == false) {
-        cout << "Tcp " 
+        cout << "Tcp "
              << inet_ntoa(id.srcIp) << ":" << id.srcPort << " -> ";
         cout << inet_ntoa(id.dstIp) << ":" << id.dstPort << endl;
     }

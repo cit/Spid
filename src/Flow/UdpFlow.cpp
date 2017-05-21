@@ -1,8 +1,8 @@
 // ---------------------------------------------------------------------------
 // UdpFlow.cpp
-// This class 
+// This class
 //
-// Author: Florian Adamsky <florian.adamsky@iem.fh-friedberg.de>
+// Author: Florian Adamsky <fa-spid@haktar.org>
 // ---------------------------------------------------------------------------
 #include <iostream>
 
@@ -22,7 +22,7 @@ Flow::UdpFlow::UdpFlow() {
 
 void Flow::UdpFlow::AddPacket(Ip::V4* pIpv4) {
     lastPacketArrived = pIpv4->timeStamp.tv_sec;
-    
+
     if (bFirstTime) {
         id.srcIp   = pIpv4->srcIp;
         id.srcPort = pIpv4->pUdp->srcPort;

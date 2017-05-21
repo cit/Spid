@@ -1,8 +1,8 @@
 // ---------------------------------------------------------------------------
 // Attributes.tcc
-// 
 //
-// Author: Florian Adamsky <florian.adamsky@iem.fh-friedberg.de>
+//
+// Author: Florian Adamsky <fa-spid@haktar.org>
 // ---------------------------------------------------------------------------
 #include <iostream>
 
@@ -21,7 +21,7 @@ Measurement::Attributes::setFingerprintPtr(int* fpCnt, float* fpPro,
         cerr << "Warning: the size of the two arrays is not identical" << endl;
         exit(EXIT_FAILURE);
     }
-    
+
     for (u_int i = 0; i < size; ++i) {
         fpCnt[i] = count[i];
         fpPro[i] = probabilities[i];
@@ -44,7 +44,7 @@ Measurement::Attributes::ImproveApproximation(fingerprint* pDb) {
             cnt[i] = count[i];
         }
     }
-    
+
 }
 
 Measurement::Attributes::~Attributes() {

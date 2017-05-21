@@ -1,8 +1,8 @@
 // ---------------------------------------------------------------------------
 // Entropy.tcc
 // This class gets a tcp or udp flow and calculates the entropy of the data.
-// 
-// Author: Florian Adamsky <florian.adamsky@iem.fh-friedberg.de>
+//
+// Author: Florian Adamsky <fa-spid@haktar.org>
 // ---------------------------------------------------------------------------
 #include <cmath>
 
@@ -22,14 +22,14 @@ Measurement::Entropy::Entropy(fingerprint* fp) {
     memset(count,0,(size*sizeof(int)));
     memset(probabilities,0,(size*sizeof(float)));
     memset(entropy,0,(size*sizeof(float)));
-    
+
     for (unsigned short i = 0; i < 256; ++i) {
-        if (fp->byteFreqPro[i] != 0) 
+        if (fp->byteFreqPro[i] != 0)
             entropy[0] += -(fp->byteFreqPro[i]
                             * ((log(fp->byteFreqPro[i] + 0.0
                                     / log(2.0))) ));
-        
-        if (fp->byteFreqOtherDirectionPro[i] != 0) 
+
+        if (fp->byteFreqOtherDirectionPro[i] != 0)
             entropy[1] += -(fp->byteFreqOtherDirectionPro[i]
                             * ((log(fp->byteFreqOtherDirectionPro[i] + 0.0
                                    / log(2.0))) ));

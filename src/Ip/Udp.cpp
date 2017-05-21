@@ -2,7 +2,7 @@
 // Udp.cpp
 // It extracts all the udp information and puts it into a class.
 //
-// Author: Florian Adamsky <florian.adamsky@iem.fh-friedberg.de>
+// Author: Florian Adamsky <fa-spid@haktar.org>
 // ---------------------------------------------------------------------------
 #include <iostream>
 #include <cstring>
@@ -31,14 +31,14 @@ Ip::Udp::Udp(const u_char* pPacket, unsigned short int ipDatagramSize,
     u_char* pPayload = const_cast<u_char*>(pPacket + ETHERNET_SIZE
                                                    + ipHeaderSize
                                                    + kUdpHeaderSize);
-    
+
     // calculate the payload size. UDP header has always a size of 8 bytes
     payloadSize = ipDatagramSize - ipHeaderSize - kUdpHeaderSize;
 
     // check if the payload is malformed
     if (payloadSize > 1460)
         throw Ip::Error("Warning: malformed udp packet or jumbo frame received");
-    // copy the payload 
+    // copy the payload
     payload = new u_char[payloadSize]();
     memcpy(payload, pPayload, payloadSize);
 
@@ -52,7 +52,7 @@ void Ip::Udp::print() {
         cout << "Payload:" << endl;
         printPayload(payload, payloadSize);
     }
-    
+
     printf("\n");
 }
 
@@ -63,7 +63,7 @@ void Ip::Udp::printPayload(u_char* payload, int len) {
         printf("%02X ", *p_payload);
         p_payload++;
 
-        // print extra space after 8th byte for visual aid 
+        // print extra space after 8th byte for visual aid
         if (i%8 == 0)
             printf(" ");
 
@@ -78,10 +78,10 @@ void Ip::Udp::printPayload(u_char* payload, int len) {
                     printf(".");
 		foo++;
             }
-            
+
             printf("\n");
         }
-        
+
     }
 }
 
