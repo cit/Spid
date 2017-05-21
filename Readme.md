@@ -1,6 +1,6 @@
 # Statistical Protocol IDentification (SPID)
 
-SPID is tool to identify network protocols based on the Kullback-Leibler divergence. It is a further development of a [https://www.iis.se/docs/The_SPID_Algorithm_-_Statistical_Protocol_IDentification.pdf](paper from Erik Hjelmvik). I re-implemented the algorithm in C++, added UDP support, and added additional measurements to improve the identification of media protocols.
+SPID is tool to identify network protocols based on the Kullback-Leibler divergence. It is a further development of the [SPID algorithm from Erik Hjelmvik](https://www.iis.se/docs/The_SPID_Algorithm_-_Statistical_Protocol_IDentification.pdf]. I re-implemented the algorithm in C++, added UDP support, and added additional measurements to improve the identification of streaming protocols. I published a [https://florian.adamsky.it/research/publications/2010/ICCCN2010.pdf](paper) about these improvements in the International Conference on Computer Communication Networks (ICCCN 2010).
 
 ## Installation
 
@@ -31,4 +31,10 @@ To identify protocols live you can use the following options:
 
 ```
 $ ./spid -p -i <interface> -f fingerprint-db.txt
+```
+
+To identify protocols in a PCAP file you can use the following command:
+
+```
+$ ./spid -f fingerprint-db.txt -r <path_to_pcap-file>
 ```
